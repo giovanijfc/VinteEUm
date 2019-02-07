@@ -1,18 +1,32 @@
 package com.example.demo.domain;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Entity
-public class CartaUsuarioPartida {
+public class CartaUsuarioPartida implements Serializable {
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer idCarParUsu;
 	private Boolean foi_Utilizada;
 	
+	@Autowired
+	@OneToOne
+	@JoinColumn(name="cartas_id")
 	private Cartas cartas;
+	
+	@OneToOne
+	@JoinColumn(name="usuario_id")
 	private Usuarios usuarios;
 	
 	
@@ -26,7 +40,8 @@ public class CartaUsuarioPartida {
 		this.foi_Utilizada = foi_Utilizada;
 	}
 
-
+	
+	
 	public Integer getIdCarParUsu() {
 		return idCarParUsu;
 	}
@@ -55,7 +70,7 @@ public class CartaUsuarioPartida {
 	public void setUsuarios(Usuarios usuarios) {
 		this.usuarios = usuarios;
 	}
-
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

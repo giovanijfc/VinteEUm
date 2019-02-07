@@ -1,38 +1,41 @@
 package com.example.demo.domain;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Partida {
+public class Partida implements Serializable {
+	private static final long serialVersionUID = 1L;
+
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer idPartida;
 	
-	private Integer perdedor;
-	private Integer vencedor;
+
+	private Usuarios perdedor_id;
 	
-	private CartaUsuarioPartida cartasUsuPar;
+
+	private Usuarios vencedor_id;
 	
-	private Usuarios usuario1;
-	
-	private Usuarios usuario2;
-	
-	
-	public Partida(Integer idPartida, Integer perdedor, Integer vencedor) {
+
+	public Partida(Integer idPartida, Usuarios perdedor, Usuarios vencedor) {
 		super();
 		this.idPartida = idPartida;
-		this.perdedor = perdedor;
-		this.vencedor = vencedor;
+		this.perdedor_id = perdedor;
+		this.vencedor_id = vencedor;
 	}
 
 	public  Partida() {
 		
 	}
 
+	
+	
 	public Integer getIdPartida() {
 		return idPartida;
 	}
@@ -41,46 +44,22 @@ public class Partida {
 		this.idPartida = idPartida;
 	}
 
-	public Integer getPerdedor() {
-		return perdedor;
+	public Usuarios getPerdedor() {
+		return perdedor_id;
 	}
 
-	public void setPerdedor(Integer perdedor) {
-		this.perdedor = perdedor;
+	public void setPerdedor(Usuarios perdedor) {
+		this.perdedor_id = perdedor;
 	}
 
-	public Integer getVencedor() {
-		return vencedor;
+	public Usuarios getVencedor() {
+		return vencedor_id;
 	}
 
-	public void setVencedor(Integer vencedor) {
-		this.vencedor = vencedor;
+	public void setVencedor(Usuarios vencedor) {
+		this.vencedor_id = vencedor;
 	}
 
-	public CartaUsuarioPartida getCartasUsuPar() {
-		return cartasUsuPar;
-	}
-
-	public void setCartasUsuPar(CartaUsuarioPartida cartasUsuPar) {
-		this.cartasUsuPar = cartasUsuPar;
-	}
-
-	public Usuarios getUsuario1() {
-		return usuario1;
-	}
-
-	public void setUsuario1(Usuarios usuario1) {
-		this.usuario1 = usuario1;
-	}
-
-	public Usuarios getUsuario2() {
-		return usuario2;
-	}
-
-	public void setUsuario2(Usuarios usuario2) {
-		this.usuario2 = usuario2;
-	}
-	
 	
 	
 	
