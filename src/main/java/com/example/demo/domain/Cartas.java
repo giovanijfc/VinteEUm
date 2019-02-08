@@ -8,8 +8,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
-import com.example.demo.domain.enums.Naipes;
-
 @Entity
 public class Cartas implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -20,7 +18,7 @@ public class Cartas implements Serializable {
 	
 	private Integer valor;
 	
-	private String naipe;
+	String naipe;
 
 	@OneToOne(mappedBy="cartas")
 	private CartaUsuarioPartida cartaUsuPar;

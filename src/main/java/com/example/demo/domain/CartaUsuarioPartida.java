@@ -29,19 +29,23 @@ public class CartaUsuarioPartida implements Serializable {
 	@JoinColumn(name="usuario_id")
 	private Usuarios usuarios;
 	
-	
 	public CartaUsuarioPartida() {
 		
 	}
 	
-	public CartaUsuarioPartida(Integer idCarParUsu, Boolean foi_Utilizada) {
-		super();
-		this.idCarParUsu = idCarParUsu;
-		this.foi_Utilizada = foi_Utilizada;
-	}
+	
 
 	
 	
+	public CartaUsuarioPartida(Integer idCarParUsu, Boolean foi_Utilizada, Cartas cartas, Usuarios usuarios) {
+		super();
+		this.idCarParUsu = idCarParUsu;
+		this.foi_Utilizada = foi_Utilizada;
+		this.cartas = cartas;
+		this.usuarios = usuarios;
+	}
+
+
 	public Integer getIdCarParUsu() {
 		return idCarParUsu;
 	}

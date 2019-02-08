@@ -2,28 +2,27 @@ package com.example.demo.domain.enums;
 
 public enum Naipes {
 	
-	COPAS("COPA"),
-	ESPADAS("ESPADA"),
-	PAUS("PAU"),
-	OUROS("OURO"),
-	ÁS_OURO("ÁS_OURO"),
-	ÁS_ESPADA("ÁS_ESPADA"),
-	ÁS_PAUS("ÁS_PAU"),
-	ÁS_COPAS("ÁS_COPA"),
-	K_COPAS("K_COPA"),
-	K_ESPADAS("K_ESPADA"),
-	K_PAUS("K_PAU"),
-	K_OUROS("K_OURO"),
-	Q_ESPADAS("Q_ESPADA"),
-	Q_PAUS("Q_PAU"),
-	Q_OUROS("Q_OURO"),
-	Q_COPAS("Q_COPA"),
-	J_COPAS("J_COPA"),
-	J_PAUS("J_PAU"),
-	J_OUROS("J_OURO"),
-	J_ESPADAS("J_ESPADA");
+	COPAS("COPAS"),
+	ESPADAS("ESPADAS"),
+	PAUS("PAUS"),
+	OUROS("OUROS"),
+	ÁS_OURO("ÁS_OUROS"),
+	ÁS_ESPADA("ÁS_ESPADAS"),
+	ÁS_PAUS("ÁS_PAUS"),
+	ÁS_COPAS("ÁS_COPAS"),
+	K_COPAS("K_COPAS"),
+	K_ESPADAS("K_ESPADAS"),
+	K_PAUS("K_PAUS"),
+	K_OUROS("K_OUROS"),
+	Q_ESPADAS("Q_ESPADAS"),
+	Q_PAUS("Q_PAUS"),
+	Q_OUROS("Q_OUROS"),
+	Q_COPAS("Q_COPAS"),
+	J_COPAS("J_COPAS"),
+	J_PAUS("J_PAUS"),
+	J_OUROS("J_OUROS"),
+	J_ESPADAS("J_ESPADAS");
 	
-	private int cod;
 	private String descricao;
 	
 	
@@ -31,9 +30,6 @@ public enum Naipes {
 		this.descricao = descricao;
 	}
 	
-	public int getCod() {
-		return cod;
-	}
 	public String getDescricao() {
 		return descricao;
 	}
