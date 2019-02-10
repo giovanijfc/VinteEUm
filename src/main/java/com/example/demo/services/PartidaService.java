@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.example.demo.domain.CartaUsuarioPartida;
 import com.example.demo.domain.Cartas;
 import com.example.demo.domain.Partida;
+import com.example.demo.domain.ResponseResource;
 import com.example.demo.domain.Usuarios;
 import com.example.demo.repository.CartaUsuarioPartidaRepository;
 import com.example.demo.repository.CartasRepository;
@@ -34,20 +35,53 @@ public class PartidaService {
 	carUsuPa.setPartida(partida);
 	carUsuPa.setCartas(lista.stream().findFirst().orElse(null));
 	return carUsuPa.getCartas() == null ? null: carUsuPa;
-	
-
 	}
-	public String vitoria(Usuarios user, Integer valor, Integer idPart) {
+	public ResponseResource<Partida>comparacao(Usuarios user, Integer valorMaq, Integer valorUser, Integer idPart){
 		Partida p1 = partidaRepo.getOne(idPart);
+		ResponseResource<Partida> response = new ResponseResource<Partida>();
+		if(valorUser > valorUser) {
+			p1.setPartidaFinalizada(true);
+			partidaRepo.save(p1);
+			partidaRepo.flush();
+			response.setDados(p1);
+			response.setMensagem("Maquina venceu com "+valorMaq+" pontos e usuario" +user.getNome()+ " perdeu com "+valorUser+" pontos.");
+			return response;
+		}else if(valorUser > valorMaq) {
+			p1.setPartidaFinalizada(true);
+			partidaRepo.save(p1);
+			partidaRepo.flush();
+			response.setDados(p1);
+			response.setMensagem(user.getNome()+" venceu com "+valorUser+" pontos e maquina perdeu com "+valorMaq+" pontos.");
+			return response;
+		}
+		p1.setPartidaFinalizada(true);
+		partidaRepo.save(p1);
+		partidaRepo.flush();
+		response.setDados(p1);
+		response.setMensagem("Empate!!! "+user.getNome()+" com "+valorUser+" e maquina com "+valorMaq+".");
+		return response;
+	}
+	
+	public ResponseResource<Partida> vitoria(Usuarios user, Integer valor, Integer idPart) {
+		Partida p1 = partidaRepo.getOne(idPart);
+		ResponseResource<Partida> response = new ResponseResource<Partida>();
 		if(valor > 21) {
 			p1.setPartidaFinalizada(true);
+			partidaRepo.save(p1);
 			partidaRepo.flush();
-			return "Jogador " + user.getNome() + " estourou com  " +valor.intValue()+ " pontos.Partida finalizada.";
+			response.setDados(p1);
+			response.setMensagem("Jogador " + user.getNome() + " estourou com  " +valor.intValue()+ " pontos.Partida finalizada.");
+			return response;
 		}else if(valor == 21) {
 			p1.setPartidaFinalizada(true);
+			partidaRepo.save(p1);
 			partidaRepo.flush();
-			return "Jogador " + user.getNome() + " com " +valor.intValue()+ " pontos.";
+			response.setDados(p1);
+			response.setMensagem("Jogador " + user.getNome() + " com " +valor.intValue()+ " pontos.");
+			return response;
 		}
-		return "Continuando....";
+		response.setDados(p1);
+		response.setMensagem("Continuando....");
+		return response;
 	}
 }
