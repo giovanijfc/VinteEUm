@@ -7,9 +7,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class CartaUsuarioPartida implements Serializable {
@@ -18,16 +21,22 @@ public class CartaUsuarioPartida implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer idCarParUsu;
-	private Boolean foi_Utilizada;
+	
+	@ManyToOne
+	@JsonIgnore 
+	private Partida partida;
 	
 	@Autowired
 	@OneToOne
 	@JoinColumn(name="cartas_id")
 	private Cartas cartas;
 	
+	
 	@OneToOne
 	@JoinColumn(name="usuario_id")
 	private Usuarios usuarios;
+	
+	
 	
 	public CartaUsuarioPartida() {
 		
@@ -40,7 +49,6 @@ public class CartaUsuarioPartida implements Serializable {
 	public CartaUsuarioPartida(Integer idCarParUsu, Boolean foi_Utilizada, Cartas cartas, Usuarios usuarios) {
 		super();
 		this.idCarParUsu = idCarParUsu;
-		this.foi_Utilizada = foi_Utilizada;
 		this.cartas = cartas;
 		this.usuarios = usuarios;
 	}
@@ -48,15 +56,9 @@ public class CartaUsuarioPartida implements Serializable {
 
 	public Integer getIdCarParUsu() {
 		return idCarParUsu;
-	}
+	}	
 	public void setIdCarParUsu(Integer idCarParUsu) {
 		this.idCarParUsu = idCarParUsu;
-	}
-	public Boolean getFoi_Utilizada() {
-		return foi_Utilizada;
-	}
-	public void setFoi_Utilizada(Boolean foi_Utilizada) {
-		this.foi_Utilizada = foi_Utilizada;
 	}
 	
 	public Cartas getCartas() {
@@ -75,6 +77,23 @@ public class CartaUsuarioPartida implements Serializable {
 		this.usuarios = usuarios;
 	}
 	
+	
+	public Partida getPartida() {
+		return partida;
+	}
+
+
+
+
+
+	public void setPartida(Partida partida) {
+		this.partida = partida;
+	}
+
+
+
+
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

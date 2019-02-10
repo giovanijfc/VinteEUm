@@ -1,34 +1,59 @@
 package com.example.demo.domain;
 
 import java.io.Serializable;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Entity
 public class Partida implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	@Autowired
+	@OneToMany(cascade=CascadeType.ALL, orphanRemoval=true, mappedBy="partida", fetch= FetchType.EAGER)
+	List <CartaUsuarioPartida> carUsuPar;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer idPartida;
 	
-
-	private Usuarios perdedor_id;
 	
-
-	private Usuarios vencedor_id;
+	@ManyToOne
+	@JoinColumn(name="Maquina")
+	private Usuarios maquina;
 	
+	
+	@ManyToOne
+	@JoinColumn(name="Jogador")
+	private Usuarios jogador;
+	
+	
+	private Boolean partidaFinalizada;
 
-	public Partida(Integer idPartida, Usuarios perdedor, Usuarios vencedor) {
+
+	public Partida(Integer idPartida, Usuarios maquina, Usuarios jogador) {
 		super();
 		this.idPartida = idPartida;
-		this.perdedor_id = perdedor;
-		this.vencedor_id = vencedor;
+		this.maquina = maquina;
+		this.jogador = jogador;
 	}
+
+
+	public Partida(Integer idPartida) {
+		super();
+		this.idPartida = idPartida;
+	}
+
 
 	public  Partida() {
 		
@@ -44,21 +69,46 @@ public class Partida implements Serializable {
 		this.idPartida = idPartida;
 	}
 
-	public Usuarios getPerdedor() {
-		return perdedor_id;
+
+	public Usuarios getMaquina() {
+		return maquina;
 	}
 
-	public void setPerdedor(Usuarios perdedor) {
-		this.perdedor_id = perdedor;
+
+	public void setMaquina(Usuarios maquina) {
+		this.maquina = maquina;
 	}
 
-	public Usuarios getVencedor() {
-		return vencedor_id;
+
+	public Usuarios getJogador() {
+		return jogador;
 	}
 
-	public void setVencedor(Usuarios vencedor) {
-		this.vencedor_id = vencedor;
+
+	public void setJogador(Usuarios jogador) {
+		this.jogador = jogador;
 	}
+
+
+	public List<CartaUsuarioPartida> getCarUsuPar() {
+		return carUsuPar;
+	}
+
+
+	public void setCarUsuPar(List<CartaUsuarioPartida> carUsuPar) {
+		this.carUsuPar = carUsuPar;
+	}
+	
+	public Boolean getPartidaFinalizada() {
+		return partidaFinalizada;
+	}
+
+
+	public void setPartidaFinalizada(Boolean partidaFinalizada) {
+		this.partidaFinalizada = partidaFinalizada;
+	}
+
+
 
 	
 	

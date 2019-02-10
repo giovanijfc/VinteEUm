@@ -6,7 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 
 @Entity
 public class Usuarios implements Serializable {
@@ -16,32 +15,16 @@ public class Usuarios implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer idUsuario;
 	private String nome;
-	private Integer vitorias;
-	private Integer derrotas;
-	
-	@OneToOne(mappedBy="usuarios")
-	private CartaUsuarioPartida cartaUsuPar;
 	
 	public Usuarios(){
 		
 	}
 	
-	public Usuarios(Integer idUsuario, String nome, Integer vitorias, Integer derrotas) {
+	public Usuarios(Integer idUsuario, String nome) {
 		super();
 		this.idUsuario = idUsuario;
 		this.nome = nome;
-		this.vitorias = vitorias;
-		this.derrotas = derrotas;
-	}
 
-	
-	
-	public CartaUsuarioPartida getCartaUsuPar() {
-		return cartaUsuPar;
-	}
-
-	public void setCartaUsuPar(CartaUsuarioPartida cartaUsuPar) {
-		this.cartaUsuPar = cartaUsuPar;
 	}
 
 	public Integer getIdUsuario() {
@@ -56,19 +39,9 @@ public class Usuarios implements Serializable {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	public Integer getVitorias() {
-		return vitorias;
-	}
-	public void setVitorias(Integer vitorias) {
-		this.vitorias = vitorias;
-	}
-	public Integer getDerrotas() {
-		return derrotas;
-	}
-	public void setDerrotas(Integer derrotas) {
-		this.derrotas = derrotas;
-	}
 
+	
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

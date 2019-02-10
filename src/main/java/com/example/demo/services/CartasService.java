@@ -16,6 +16,7 @@ import com.example.demo.repository.CartasRepository;
 @Service
 public class CartasService {
 	
+	
 	List<Cartas> cartas = new ArrayList<Cartas>();
 	
 	Random rand = new Random();
@@ -29,20 +30,12 @@ public class CartasService {
 	
 	List<CartaUsuarioPartida> carUP = new ArrayList<>();
 	
-	
 	public void embaralhando() {
-		for(int i =0;  i < cartas.size(); ++i) {
-			CartaUsuarioPartida c = new CartaUsuarioPartida(null, false, cartas.get(i), null);
-			carUP.add(c);
-		}
-		carUP.sort((a1,a2) -> rand.nextInt(2) - 1);
-		cartaUsuPar.saveAll(carUP);	
+		
 		
 	}
 	
-
 	public void newBaralho() {
-		
 		for(int i = 2; i < 11; ++i) {			
 			Cartas c = new Cartas(null,i,Naipes.COPAS.getDescricao());	
 			cartas.add(c);	
@@ -110,7 +103,7 @@ public class CartasService {
 			Cartas c10 = new Cartas(null,con,Naipes.Q_PAUS.getDescricao());	
 			cartas.add(c10); 
 			
-			 cartaRepo.saveAll(cartas);
+			cartaRepo.saveAll(cartas);
 			 
 			 
 			 

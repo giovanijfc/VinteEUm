@@ -6,7 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 
 @Entity
 public class Cartas implements Serializable {
@@ -19,9 +18,6 @@ public class Cartas implements Serializable {
 	private Integer valor;
 	
 	String naipe;
-
-	@OneToOne(mappedBy="cartas")
-	private CartaUsuarioPartida cartaUsuPar;
 	
 	public Cartas() {
 		
@@ -46,20 +42,23 @@ public class Cartas implements Serializable {
 		this.valor = valor;
 	}
 
-	public CartaUsuarioPartida getCartaUsuPar() {
-		return cartaUsuPar;
-	}
-
-	public void setCartaUsuPar(CartaUsuarioPartida cartaUsuPar) {
-		this.cartaUsuPar = cartaUsuPar;
-	}
-
 	public Integer getIdCarta() {
 		return idCarta;
 	}
 
 	public void setIdCarta(Integer idCarta) {
 		this.idCarta = idCarta;
+	}
+
+
+	public String getNaipe() {
+		return naipe;
+	}
+
+
+
+	public void setNaipe(String naipe) {
+		this.naipe = naipe;
 	}
 
 
