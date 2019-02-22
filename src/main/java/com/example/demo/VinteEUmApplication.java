@@ -5,7 +5,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.example.demo.domain.Usuarios;
 import com.example.demo.repository.CartasRepository;
 import com.example.demo.repository.UsuariosRepository;
 import com.example.demo.services.CartasService;
@@ -25,9 +24,6 @@ public class VinteEUmApplication implements CommandLineRunner {
 	}
 	@Override
 	public void run(String... args) throws Exception {
-		Usuarios com = new Usuarios(1, "Maquina");
-		usuarioRepo.save(com);
-		cartaSer.newBaralho();
 	}	
 }
 

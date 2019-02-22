@@ -41,11 +41,6 @@ public class CartaUsuarioPartida implements Serializable {
 	public CartaUsuarioPartida() {
 		
 	}
-	
-	
-
-	
-	
 	public CartaUsuarioPartida(Integer idCarParUsu, Boolean foi_Utilizada, Cartas cartas, Usuarios usuarios) {
 		super();
 		this.idCarParUsu = idCarParUsu;

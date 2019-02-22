@@ -2,33 +2,22 @@ package com.example.demo.services;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.domain.CartaUsuarioPartida;
 import com.example.demo.domain.Cartas;
 import com.example.demo.domain.enums.Naipes;
-import com.example.demo.repository.CartaUsuarioPartidaRepository;
 import com.example.demo.repository.CartasRepository;
 
 @Service
 public class CartasService {
 	
 	
-	List<Cartas> cartas = new ArrayList<Cartas>();
-	
-	Random rand = new Random();
-	
-	Naipes naipes;
+	private List<Cartas> cartas = new ArrayList<Cartas>();
 	
 	@Autowired
-	CartasRepository cartaRepo;
-	@Autowired
-	CartaUsuarioPartidaRepository cartaUsuPar;
-	
-	List<CartaUsuarioPartida> carUP = new ArrayList<>();
+	private CartasRepository cartaRepo;
 	
 	public void embaralhando() {
 		

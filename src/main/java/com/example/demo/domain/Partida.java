@@ -24,7 +24,7 @@ public class Partida implements Serializable {
 
 	@Autowired
 	@OneToMany(cascade=CascadeType.ALL, orphanRemoval=true, mappedBy="partida", fetch= FetchType.EAGER)
-	List <CartaUsuarioPartida> carUsuPar;
+	private List <CartaUsuarioPartida> carUsuPar;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

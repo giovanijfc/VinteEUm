@@ -12,38 +12,25 @@ import com.example.demo.domain.CartaUsuarioPartida;
 import com.example.demo.domain.Cartas;
 import com.example.demo.domain.Partida;
 import com.example.demo.domain.ResponseResource;
-import com.example.demo.domain.Usuarios;
 import com.example.demo.repository.CartaUsuarioPartidaRepository;
 import com.example.demo.repository.PartidaRepository;
 import com.example.demo.repository.UsuariosRepository;
-import com.example.demo.services.CartasService;
 import com.example.demo.services.PartidaService;
 
 @RestController
-@RequestMapping(value="/21")
+@RequestMapping(value="/21/partida")
 public class PartidaResource {
 	
 	
 	@Autowired
-	CartaUsuarioPartidaRepository cartaUsuPar;
+	private CartaUsuarioPartidaRepository cartaUsuPar;
 	@Autowired
-	PartidaService partidaSer;
+	private PartidaService partidaSer;
 	@Autowired
-	PartidaRepository partidaRepo;
+	private PartidaRepository partidaRepo;
 	@Autowired
-	UsuariosRepository usuarioRepo;
-	@Autowired
-	CartasService cartaSer;
-	
+	private UsuariosRepository usuarioRepo;
 
-
-	
-	@RequestMapping(value="/registrando/{nome}", method=RequestMethod.GET)
-	public Usuarios registro(@PathVariable String nome) {
-		Usuarios user = new Usuarios(null, nome);	
-		usuarioRepo.save(user);
-		return user;
-	}
 	
 	@RequestMapping(value="/iniciar/{id}", method=RequestMethod.GET)
 	public ResponseResource<Partida> inicio(@PathVariable Integer id) {
@@ -54,7 +41,7 @@ public class PartidaResource {
 		p1.setMaquina(usuarioRepo.findById(1).orElse(null));
 		p1.setJogador(usuarioRepo.findById(id).orElse(null));
 		if(p1.getJogador() == null) {
-			response.setMensagem("Sem jogador na partida!");
+			response.setMensagem("Sem jogador(a) na partida!");
 			response.setDados(p1);
 			return response;
 		}	
@@ -63,14 +50,14 @@ public class PartidaResource {
 		p1.getCarUsuPar().add(partidaSer.puxarCarta(p1.getJogador(), p1));
 		partidaRepo.save(p1);	
 		partidaRepo.flush();
-		response.setMensagem("Cartas puxadas para jogar"+p1.getJogador().getNome());
+		response.setMensagem("Cartas puxadas para jogador(a) "+p1.getJogador().getNome());
 		response.setDados(p1);
 		return response;
 			
 	}
 	
-	@RequestMapping(value="/continuacao/partida{idPart}/user{idUser}", method=RequestMethod.GET)
-	public ResponseResource<Partida> continuar(@PathVariable Integer idUser, @PathVariable Integer idPart) {
+	@RequestMapping(value="/continuacao/partida{idPart}", method=RequestMethod.GET)
+	public ResponseResource<Partida> continuar(@PathVariable Integer idPart) {
 		ResponseResource<Partida> response = new ResponseResource<Partida>();
 		Partida p1 = partidaRepo.getOne(idPart);
 		
@@ -83,13 +70,13 @@ public class PartidaResource {
 		cartaUsuPar.flush();
 		partidaRepo.flush();	
 			
-		return partidaSer.vitoria(p1.getJogador(), p1.getCarUsuPar().stream().filter(a -> a.getUsuarios().getIdUsuario().equals(idUser))
+		return partidaSer.vitoria(p1.getJogador(), p1.getCarUsuPar().stream().filter(a -> a.getUsuarios().getIdUsuario().equals(p1.getJogador().getIdUsuario()))
 				.map(CartaUsuarioPartida::getCartas).mapToInt(Cartas::getValor)
 				.sum(), idPart);		
 	}		
 	
-	@RequestMapping(value="/naoContinuar/partida{idPart}/user{idUser}", method=RequestMethod.GET)
-  	public ResponseResource<Partida> naoContinuar(@PathVariable Integer idPart,@PathVariable Integer idUser) {
+	@RequestMapping(value="/naoContinuar/partida{idPart}", method=RequestMethod.GET)
+  	public ResponseResource<Partida> naoContinuar(@PathVariable Integer idPart) {
 		ResponseResource<Partida> response = new ResponseResource<Partida>();
 		Partida p1 = partidaRepo.getOne(idPart);
 		
@@ -115,21 +102,25 @@ public class PartidaResource {
 		.mapToInt(Cartas::getValor)
 		.sum(),
 		idPart);
-		if(p1.getPartidaFinalizada()) {
-			response.setMensagem("Esta Partida já foi finalizada!");
-			response.setDados(p1);
-			return response;
-		}
 		
+		if( ! p1.getPartidaFinalizada()) {		
 		return partidaSer.comparacao(p1.getJogador(),
 		p1.getCarUsuPar().stream().filter(a -> a.getUsuarios().getIdUsuario().equals(1))
 		.map(CartaUsuarioPartida::getCartas)
 		.mapToInt(Cartas::getValor)
 		.sum(),
-		p1.getCarUsuPar().stream().filter(a -> a.getUsuarios().getIdUsuario().equals(idUser))
+		p1.getCarUsuPar().stream().filter(a -> a.getUsuarios().getIdUsuario().equals(p1.getJogador().getIdUsuario()))
 		.map(CartaUsuarioPartida::getCartas).mapToInt(Cartas::getValor)
 		.sum(),
-		idPart);		
+		idPart);	
+		}
+		
+		return partidaSer.vitoria(p1.getMaquina(),
+				p1.getCarUsuPar().stream().filter(a -> a.getUsuarios().getIdUsuario().equals(1))
+				.map(CartaUsuarioPartida::getCartas)
+				.mapToInt(Cartas::getValor)
+				.sum(),
+				idPart);
 	}
 
 }

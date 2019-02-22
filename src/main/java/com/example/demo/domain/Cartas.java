@@ -17,7 +17,7 @@ public class Cartas implements Serializable {
 	
 	private Integer valor;
 	
-	String naipe;
+	private String naipe;
 	
 	public Cartas() {
 		

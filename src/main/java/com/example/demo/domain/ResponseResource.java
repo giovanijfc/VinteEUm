@@ -5,10 +5,6 @@ package com.example.demo.domain;
 
 import java.io.Serializable;
 
-/**
- * @author giovanijfc
- *
- */
  public class ResponseResource <T> implements Serializable {
 
 	private static final long serialVersionUID = -5333631717996304317L;
