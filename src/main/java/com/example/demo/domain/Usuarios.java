@@ -29,31 +29,43 @@ public class Usuarios implements Serializable {
 	private Integer idUsuario;
 	
 	
-	@NotNull(message="Preenchimento obrigátorio")  
-	@Size(min=6, max=50)
-	@Pattern(regexp = "^[A-Za-z0-9]+$")
+	@NotNull(message="Preenchimento obrigátorio!")  
+	@Size(min=3, max=50)
+	@Pattern(regexp = "^[A-Za-z0-9]+$", message="Nome digitado incorreto, tente sem espaço e char especiais!")
 	private String nome;	
 	
-	@NotNull(message="Preenchimento obrigátorio") 
+	@NotNull(message="Preenchimento obrigátorio!") 
 	@Column(unique=true)
 	private String email;
 	
-	@NotNull(message="Preenchimento obrigátorio") 
+	@NotNull(message="Preenchimento obrigátorio!") 
 	@JsonIgnore
+	@Size(min=6)
 	private String senha;
 	
 	private Integer vitorias;
 	private Integer derrotas;
+	private Integer empates;
 	
 	@ElementCollection(fetch=FetchType.EAGER)
 	@CollectionTable(name="PERFIS")
 	private Set<Integer> perfis = new HashSet<>();
 	
+	@JsonIgnore
+	@NotNull(message="Preenchimento obrigátorio!")
+	@Size(min=6)
+	@Column(unique=true)
+	private String palavraChave;
+	
 	public Usuarios(){
 		addPerfil(Perfil.USER);
 	}
-	
-	public Usuarios(Integer idUsuario, String nome, String email, String senha, Integer vitorias, Integer derrotas) {
+
+	public Usuarios(Integer idUsuario,
+			@NotNull(message = "Preenchimento obrigátorio") @Size(min = 6, max = 50) @Pattern(regexp = "^[A-Za-z0-9]+$") String nome,
+			@NotNull(message = "Preenchimento obrigátorio") String email,
+			@NotNull(message = "Preenchimento obrigátorio") String senha, Integer vitorias, Integer derrotas,
+			Integer empates, String palavraChave) {
 		super();
 		this.idUsuario = idUsuario;
 		this.nome = nome;
@@ -61,10 +73,26 @@ public class Usuarios implements Serializable {
 		this.senha = senha;
 		this.vitorias = vitorias;
 		this.derrotas = derrotas;
+		this.empates = empates;
 		addPerfil(Perfil.USER);
+		this.palavraChave = palavraChave;
 	}
 
-	
+	public String getPalavraChave() {
+		return palavraChave;
+	}
+
+	public void setPalavraChave(String palavraChave) {
+		this.palavraChave = palavraChave;
+	}
+
+	public Integer getEmpates() {
+		return empates;
+	}
+
+	public void setEmpates(Integer empates) {
+		this.empates = empates;
+	}
 
 	public Integer getVitorias() {
 		return vitorias;
@@ -142,4 +170,5 @@ public class Usuarios implements Serializable {
 			return false;
 		return true;
 	}
+
 }

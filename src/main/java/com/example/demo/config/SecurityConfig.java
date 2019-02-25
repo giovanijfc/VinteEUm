@@ -23,48 +23,39 @@ import com.example.demo.security.JWTAuthenticationFilter;
 import com.example.demo.security.JWTAuthorizationFilter;
 import com.example.demo.security.JWTUtil;
 
-
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
-	private UserDetailsService userDetailsService;	
+	private UserDetailsService userDetailsService;
 	@Autowired
 	private Environment env;
 	@Autowired
 	private JWTUtil jwtUtil;
-	
-	private final String[] PUBLIC_MATCHER_GET= {			
-			"/21/partida/iniciar/**",
-			"/21/partida/continuacao/**",
-			"/21/partida/naoContinuar/**",
-			"/21/user/**"
-	};
-	private final String[] PUBLIC_MATCHER_POST= {
-			"/21/user/registrando",			
-	};
 
-	
+	private final String[] PUBLIC_MATCHER_GET = { "/21/partida/iniciar/**", "/21/partida/continuacao/**",
+			"/21/partida/naoContinuar/**", "/21/user/**" };
+	private final String[] PUBLIC_MATCHER_POST = { "/21/user/registrando", "/auth/refresh_token" };
+	private final String[] PUBLIC_MATCHER_PUT = { "/21/user/**", "/auth/forgot" };
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		if(Arrays.asList(env.getActiveProfiles()).contains("test")) {
+		if (Arrays.asList(env.getActiveProfiles()).contains("test")) {
 			http.headers().frameOptions().disable();
 		}
-		
+
 		http.cors().and().csrf().disable();
-		http.authorizeRequests()
-			.antMatchers("/h2-console/**").permitAll()
-			.antMatchers(HttpMethod.GET , PUBLIC_MATCHER_GET).permitAll()
-			.antMatchers(HttpMethod.POST , PUBLIC_MATCHER_POST).permitAll()
-			.antMatchers(HttpMethod.PUT , "/21/user/**").permitAll()
-			.anyRequest().authenticated();		
+		http.authorizeRequests().antMatchers("/h2-console/**").permitAll()
+				.antMatchers(HttpMethod.GET, PUBLIC_MATCHER_GET).permitAll()
+				.antMatchers(HttpMethod.POST, PUBLIC_MATCHER_POST).permitAll()
+				.antMatchers(HttpMethod.PUT, PUBLIC_MATCHER_PUT).permitAll().anyRequest().authenticated();
 		http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
 		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	}
-	
+
 	@Bean
 	CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
@@ -73,13 +64,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		source.registerCorsConfiguration("/**", configuration);
 		return source;
 	}
-	
+
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
 	}
-	
+
 	@Bean
 	public BCryptPasswordEncoder bCryptPasswordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
+	
 }

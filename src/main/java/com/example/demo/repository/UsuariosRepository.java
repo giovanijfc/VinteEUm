@@ -11,4 +11,7 @@ public interface UsuariosRepository extends JpaRepository <Usuarios, Integer> {
 		
 	@Transactional(readOnly=true)
 	Usuarios findByEmail(String email);
+	
+	@Transactional(readOnly=true)
+	Usuarios findByPalavraChave(String palavraChave);
 }

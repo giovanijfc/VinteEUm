@@ -85,10 +85,6 @@ public class CartaUsuarioPartida implements Serializable {
 		this.partida = partida;
 	}
 
-
-
-
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -96,6 +92,7 @@ public class CartaUsuarioPartida implements Serializable {
 		result = prime * result + ((idCarParUsu == null) ? 0 : idCarParUsu.hashCode());
 		return result;
 	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

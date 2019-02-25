@@ -2,9 +2,6 @@ package com.example.demo.dto;
 
 import java.io.Serializable;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-
 public class UsuariosNewDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -19,15 +16,14 @@ public class UsuariosNewDTO implements Serializable {
 	private Integer vitorias;
 	private Integer derrotas;
 	
+	private String palavraChave;
+	
 	public UsuariosNewDTO() {
 		
 	}
 	
-	
-	
-	public UsuariosNewDTO(Integer idUsuario, @NotEmpty(message = "Preenchimento obrigatório") String nome,
-			@NotEmpty(message = "Preenchimento obrigatório") @Email(message = "Email inválido") String email,
-			@NotEmpty(message = "Preenchimento obrigatório") String senha, Integer vitorias, Integer derrotas) {
+	public UsuariosNewDTO(Integer idUsuario, String nome, String email, String senha, Integer vitorias,
+			Integer derrotas, String palavraChave) {
 		super();
 		this.idUsuario = idUsuario;
 		this.nome = nome;
@@ -35,9 +31,16 @@ public class UsuariosNewDTO implements Serializable {
 		this.senha = senha;
 		this.vitorias = vitorias;
 		this.derrotas = derrotas;
+		this.palavraChave = palavraChave;
 	}
 
+	public String getPalavraChave() {
+		return palavraChave;
+	}
 
+	public void setPalavraChave(String palavraChave) {
+		this.palavraChave = palavraChave;
+	}
 
 	public Integer getVitorias() {
 		return vitorias;

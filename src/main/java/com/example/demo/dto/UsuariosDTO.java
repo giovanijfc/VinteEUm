@@ -9,14 +9,26 @@ public class UsuariosDTO implements Serializable{
 	private String nome;
 	private String email;
 	
+	private String palavraChave;
+	
 	public UsuariosDTO() {
 		
 	}
 	
-	public UsuariosDTO(String id, String nome, String email) {
+	public UsuariosDTO(String id, String nome, String email, String palavraChave) {
 		super();
-		this.id = null;
+		this.id = id;
 		this.nome = nome;
+		this.email = email;
+		this.palavraChave = palavraChave;
+	}
+
+	public String getPalavraChave() {
+		return palavraChave;
+	}
+
+	public void setPalavraChave(String palavaChave) {
+		this.palavraChave = palavaChave;
 	}
 
 	public String getId() {
