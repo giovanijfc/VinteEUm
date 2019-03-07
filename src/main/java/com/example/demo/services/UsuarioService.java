@@ -2,10 +2,10 @@ package com.example.demo.services;
 
 import java.util.Optional;
 
-import javax.validation.ConstraintViolationException;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -39,9 +39,17 @@ public class UsuarioService {
 		return user.orElseThrow(() -> new ObjectNotFoundException("Usuario não encontrado"));
 	}
 
+	public Usuarios findByEmail(String email) {
+		Usuarios user = usuarioRepo.findByEmail(email);
+		if (user == null) {
+			throw new ObjectNotFoundException("Usuario não existe");
+		}
+		return user;
+	}
+
 	public Usuarios fromDTO(UsuariosNewDTO objDto) {
-		return new Usuarios(null, objDto.getNome(), objDto.getEmail(), objDto.getSenha(), 0, 0, 0,
-				objDto.getPalavraChave());
+		return new Usuarios(null, objDto.getNome(), objDto.getEmail(), pe.encode(objDto.getSenha()), 0, 0, 0,
+				pe.encode(objDto.getPalavraChave()));
 	}
 
 	public Usuarios fromDTO(UsuariosDTO objDto, Integer id) {
@@ -53,6 +61,15 @@ public class UsuarioService {
 			throw new DataIntegrityException("Não deixe campos nulos");
 		}
 	}
+	
+	@Transactional
+	public ResponseEntity<Usuarios> findEmailConfirmation(String email){
+		Usuarios user = usuarioRepo.findByEmail(email);
+		if (user != null) {
+			throw new DataIntegrityException("E-mail already registered");		
+		}
+		return null;
+	}
 
 	public Usuarios update(Usuarios obj) {
 		Usuarios newObj = find(obj.getIdUsuario());
@@ -60,17 +77,10 @@ public class UsuarioService {
 		return usuarioRepo.save(newObj);
 	}
 
-	public void insert(Usuarios obj) {
+	public Usuarios insert(Usuarios obj) {
 		obj.setIdUsuario(null);
-		try {
-			usuarioRepo.save(obj);
-		} catch (DataIntegrityViolationException e) {
-			throw new DataIntegrityException("Email já cadastrado");
-		} catch (ConstraintViolationException e) {
-			throw new DataIntegrityException("Nome maior de 6 caracteres(Sem caracteres especiais), palavraChave maior que 3 caracteres"
-					+ " e senha maior que 6 caracteres... ",
-					e.getCause());
-		}
+		usuarioRepo.save(obj);
+		return obj;
 	}
 
 	public void delete(Integer id) {
@@ -87,7 +97,7 @@ public class UsuarioService {
 		newObj.setEmail(obj.getEmail());
 		newObj.setPalavraChave(obj.getPalavraChave());
 	}
-	
+
 	public ResponseResource<Usuarios> changePass(String senha, Usuarios user) {
 		ResponseResource<Usuarios> response = new ResponseResource<Usuarios>();
 		user.setSenha(pe.encode(senha));
@@ -96,5 +106,5 @@ public class UsuarioService {
 		response.setMensagem("Senha alterada com sucesso");
 		return response;
 	}
-			
+
 }

@@ -20,10 +20,10 @@ import com.example.demo.services.UserService;
 import com.example.demo.services.UsuarioService;
 import com.example.demo.services.exceptions.DataIntegrityException;
 
-@RestController
+@RestController	
 @RequestMapping(value = "/auth")
 public class AuthResource {
-
+	
 	@Autowired
 	private BCryptPasswordEncoder pe;
 	@Autowired
@@ -36,25 +36,23 @@ public class AuthResource {
 	@RequestMapping(value = "/refresh_token", method = RequestMethod.POST)
 	public ResponseEntity<Void> refreshToken(HttpServletResponse response) {
 		UserSS user = UserService.authenticated();
-		if (user == null) {
-			throw new DataIntegrityException("Sem usuario logado");
-		}
 		String token = jwtUtil.generateToken(user.getUsername());
-
 		response.addHeader("Authorization", "Bearer " + token);
+		response.addHeader("access-control-expose-headers", "Authorization");
 		return ResponseEntity.noContent().build();
+		
 	}
 
 	@RequestMapping(value = "/forgot", method = RequestMethod.PUT)
 	public ResponseResource<Usuarios> forgot(@RequestBody ChangedNewPassDTO objDto) {
 		Usuarios user = repo.findByEmail(objDto.getEmail());
 		if (user == null) {
-			throw new DataIntegrityException("Email incorreto!");
+			throw new DataIntegrityException("Incorrect email!");
 		}
 		if ((pe.matches(objDto.getPalavraChave(), user.getPalavraChave()))
 				&& objDto.getEmail().equals(user.getEmail())) {
 			return usuarioService.changePass(objDto.getNewSenha(), user);
 		}
-		throw new DataIntegrityException("FALHA NA TENTATIVA DE AUTENTICAÇÃO");
+		throw new DataIntegrityException("Authentication attempt failed");
 	}
 }

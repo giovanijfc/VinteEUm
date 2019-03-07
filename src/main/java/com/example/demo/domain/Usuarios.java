@@ -34,8 +34,8 @@ public class Usuarios implements Serializable {
 	@Pattern(regexp = "^[A-Za-z0-9]+$", message="Nome digitado incorreto, tente sem espaço e char especiais!")
 	private String nome;	
 	
-	@NotNull(message="Preenchimento obrigátorio!") 
 	@Column(unique=true)
+	@NotNull(message="Preenchimento obrigátorio!") 
 	private String email;
 	
 	@NotNull(message="Preenchimento obrigátorio!") 
@@ -47,7 +47,7 @@ public class Usuarios implements Serializable {
 	private Integer derrotas;
 	private Integer empates;
 	
-	@ElementCollection(fetch=FetchType.EAGER)
+	@ElementCollection( fetch=FetchType.EAGER)
 	@CollectionTable(name="PERFIS")
 	private Set<Integer> perfis = new HashSet<>();
 	
@@ -62,9 +62,9 @@ public class Usuarios implements Serializable {
 	}
 
 	public Usuarios(Integer idUsuario,
-			@NotNull(message = "Preenchimento obrigátorio") @Size(min = 6, max = 50) @Pattern(regexp = "^[A-Za-z0-9]+$") String nome,
-			@NotNull(message = "Preenchimento obrigátorio") String email,
-			@NotNull(message = "Preenchimento obrigátorio") String senha, Integer vitorias, Integer derrotas,
+		String nome,
+		String email,
+		String senha, Integer vitorias, Integer derrotas,
 			Integer empates, String palavraChave) {
 		super();
 		this.idUsuario = idUsuario;

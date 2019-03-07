@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -36,26 +37,23 @@ public class UsuarioResource {
 	@Autowired
 	private UsuarioService usuarioSer;
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ResponseEntity<Usuarios> find(@PathVariable Integer id) {
+	@RequestMapping(value = "/email", method = RequestMethod.GET)
+	public ResponseEntity<Usuarios> find(@RequestParam(name="value") String email) {
 		UserSS userss = UserService.authenticated();
-		if (userss == null || !userss.hasRole(Perfil.ADMIN) && !(userss.getId() == id)) {
+		Usuarios user = usuarioSer.findByEmail(email);
+		if (userss == null || !userss.hasRole(Perfil.ADMIN) && !(userss.getId() == user.getIdUsuario())) {
 			throw new AuthorizationException("Sem autorização para fazer essa ação");
-		}
-
-		Usuarios user = usuarioSer.find(id);
+		}	
 		return ResponseEntity.ok().body(user);
 	}
 
 	@RequestMapping(value = "/registrando", method = RequestMethod.POST)
 	public ResponseEntity<Void> registro(@Valid @RequestBody UsuariosNewDTO objDto) {
 		Usuarios user = usuarioSer.fromDTO(objDto);
-		usuarioSer.insert(user);
+		usuarioSer.findEmailConfirmation(user.getEmail());
+		user = usuarioSer.insert(user);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getIdUsuario())
 				.toUri();
-		user.setSenha(pe.encode(user.getSenha()));
-		user.setPalavraChave(pe.encode(user.getPalavraChave()));
-		usuarioRepo.flush();
 		return ResponseEntity.created(uri).build();
 	}
 
